@@ -1,8 +1,9 @@
+/* eslint-disable no-undef */
 const { createRouter } = require('../../Routes/createRoutes')
 const {User,Token}= require('../../models/Model')
 const { success, error, wrapRequestHandler } = require('../../helper/response')
-const { validate } = require('../../helper/validation')
-const { body } = require('express-validator')
+// const { validate } = require('../../helper/validation')
+// const { body } = require('express-validator')
 var jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
 const handler = async (req, res) => {

@@ -8,7 +8,8 @@ const TokenVerify = () => async (req, res, next) => {
     token_id = token_id.replace("Bearer ", "");
     if (!token_id) return res.status(401).send(error(errorMessage));
     try {
-        const user = await jwt.verify(token_id, process.env.APP_TOKEN_KEY);
+        // eslint-disable-next-line no-undef
+        await jwt.verify(token_id, process.env.APP_TOKEN_KEY);
     } catch (e) {
         return res.status(401).send(error(errorMessage))
     }

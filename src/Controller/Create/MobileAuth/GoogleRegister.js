@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const { createRouter } = require('../../../Routes/createRoutes')
 const {User,Token}= require('../../../models/Model')
 const { success, error, wrapRequestHandler } = require('../../../helper/response')
@@ -7,7 +8,6 @@ const handler = async (req, res) => {
         const exist = await User.findOne({ email: req.body.email })
         if (!exist) {
             const exist = await User({ ...req.body }).save()
-            console.log(exist)
             if (exist) {
                 let userToken = jwt.sign({
                     data: req.body

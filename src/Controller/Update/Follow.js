@@ -1,7 +1,7 @@
 const { updateRouter } = require('../../Routes/updateRoutes')
 // const { User, Token } = require('../../models/Model')
 const User = require('../../models/Register')
-const { success, error, wrapRequestHandler } = require('../../helper/response')
+const { success, wrapRequestHandler } = require('../../helper/response')
 const TokenVerify = require('../../Middleware/TokenVerify')
 const handler = async (req, res) => {
     try {
@@ -16,8 +16,8 @@ const handler = async (req, res) => {
                 let index_2 = follower.follower.indexOf(req.login_token.user_id)
                 following.following.splice(index_1, 1)
                 follower.follower.splice(index_2, 1)
-                const updateData = await User.findOneAndUpdate({ _id: req.login_token.user_id }, { following: following.following })
-                const yo = await User.findOneAndUpdate({ _id: req.body._id }, { follower: follower.follower })
+                await User.findOneAndUpdate({ _id: req.login_token.user_id }, { following: following.following })
+                await User.findOneAndUpdate({ _id: req.body._id }, { follower: follower.follower })
                 const user = await User.findOne({ _id: req.body._id })
                 return res.json(success("user Follow successfully", user))
             } else {

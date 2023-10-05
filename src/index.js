@@ -1,10 +1,10 @@
 const { app } = require('./app')
-const { connection } = require('./config/dbConnection')
 const requireDir = require('require-dir')
 const http = require('http')
 const socketIO = require('socket.io')
-const { PORT } = process.env
 require('dotenv').config();
+// eslint-disable-next-line no-undef
+const { PORT } = process.env
 requireDir('./Controller', { recurse: true });
 requireDir('./Routes');
 let server = http.createServer(app)
@@ -24,6 +24,6 @@ io.on('connection', (socket) => {
     console.log('A user disconnected');
   });
 });
-server.listen(PORT , (err) => {
+server.listen(PORT, () => {
   console.log(`Server run on port no. ${PORT || 9090}`)
 }) 

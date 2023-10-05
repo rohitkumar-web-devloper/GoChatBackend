@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 const { createRouter } = require('../../Routes/createRoutes')
-const {User,Token}= require('../../models/Model')
+const { User, Token } = require('../../models/Model')
 const { success, error, wrapRequestHandler } = require('../../helper/response')
 var jwt = require('jsonwebtoken')
 const { validate } = require('../../helper/validation')
