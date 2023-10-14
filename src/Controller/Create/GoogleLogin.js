@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const { createRouter } = require('../../Routes/createRoutes')
 const { wrapRequestHandler, success, error } = require('../../helper/response')
-const { User, Token, follows } = require('../../models')
+const { User, Token } = require('../../models')
 // const { Register } = require('../../MongooseSchema')
 var jwt = require('jsonwebtoken')
 const handler = async (req, res) => {
@@ -11,14 +11,10 @@ const handler = async (req, res) => {
                 email: req.body.email
             }
         })
-        if (!exist) {
+        if (exist) {
             let userToken = jwt.sign({ email: req.body.email }, process.env.APP_TOKEN_KEY);
-            const user = await User.create(req.body)
-            if (user) {
-                const tokenSet = await Token.create({ userId: user.id, token: userToken })
-                await follows.create({ userId: user.id, follower: JSON.stringify([]), following: JSON.stringify([]) })
-                res.json(success("User Registered", { token: tokenSet.token, id: tokenSet.userId }))
-            }
+            await Token.create({ userId: exist.id, token: userToken })
+            return res.json(success("User Login Successfully", { token: userToken, id: exist.id }))
         } else {
             res.status(400).json(error("User Already exist"))
         }
@@ -26,4 +22,4 @@ const handler = async (req, res) => {
         res.status(400).send(error)
     }
 }
-createRouter.post('/google-register', wrapRequestHandler(handler))
+createRouter.post('/google-login', wrapRequestHandler(handler))

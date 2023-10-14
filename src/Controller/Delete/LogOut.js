@@ -1,13 +1,20 @@
 const { deleteRouter } = require('../../Routes/deleteRoutes')
-const Token = require('../../models/Token')
+const { wrapRequestHandler, success } = require('../../helper/response')
 const TokenVerify = require("../../Middleware/TokenVerify")
-const { success, wrapRequestHandler, error } = require("../../helper/response")
+const { Token } = require('../../models')
+
 const handler = async (req, res) => {
     try {
-        const destroy = await Token.deleteOne({ token: req.login_token.token })
-        res.json(success("Logout Successfully", destroy))
-    } catch (err) {
-        res.json(error("Banner Removed Error", err))
+        await Token.destroy({
+            where: {
+                // userId: req.login_token.userId,
+                token: req.login_token.token
+            }
+        })
+        res.Json(success("User Logout successfully"))
+    } catch (error) {
+        res.status(400).json(success("", error))
     }
 }
-deleteRouter.delete('/user-logout', TokenVerify(), wrapRequestHandler(handler))
+
+deleteRouter.delete('/logout', TokenVerify(), wrapRequestHandler(handler))
