@@ -13,12 +13,13 @@ const handler = async (req, res) => {
             },
             include: [
                 {
-                    // attributes: ["name"],
+                    attributes: ["follower", "following"],
                     model: follows,
                     as: "followData"
                 }
             ]
         })
+        // console.log(JSON.parse(allUser.followData.follower), "oooooooo")
         if (allUser) {
             res.json(success("", allUser))
         } else {
