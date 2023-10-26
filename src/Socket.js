@@ -8,10 +8,11 @@ app.get('/', (req, res) => {
     res.send("hello world")
 })
 const io = socketIO(server, {
-    cors:{
+    cors: {
         origins: [
-            // "http://localhost:3000/",
-            "http://192.168.1.47:3000",
+            "http://localhost:3000/",
+            "http://192.168.1.127:3000",
+            "http://192.168.1.126:3000",
         ]
     }
 })
@@ -49,19 +50,24 @@ io.on('connection', async (socket) => {
             }
         }
     })
-    socket.on('sendMessage', ({ message, sender, reciver, time }) => {
-        console.log(message, reciver)
+    socket.on('sendMessage', ({ message, sender, receiver, time }) => {
+        // console.log(message, receiver)
         fs.readFile(filePath, "utf8", (err, res) => {
             if (err) {
                 console.log(err)
             } else {
                 const filter = JSON.parse(res)
-                const exist = filter.find(pq => pq.userId == reciver)
-                socket.to(exist.socketId).emit("recieveMessage", { sender, message, time, reciver })
+                const exist = filter.find(pq => pq.userId == receiver)
+                socket.to(exist.socketId).emit("recieveMessage", { sender, message, time, receiver })
             }
         })
     })
-    console.log('user connected' , userId);
+    console.log('user connected', userId);
+    socket.on('status', (data) => {
+        console.log(data, "ppppppppppdddddpp")
+        socket.emit('activeStatus', "world");
+    })
+    // socket.emit('status', { userId })
     socket.on('disconnect', () => {
         console.log('A user disconnected', userId);
     });

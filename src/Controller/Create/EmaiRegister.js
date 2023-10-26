@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
 const handler = async (req, res) => {
     try {
+        console.log(req.body)
         const exist = await User.findOne({
             where: {
                 email: req.body.email
